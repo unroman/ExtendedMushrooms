@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Forge Recommended Versioning](https://mcforge.readthedocs.io/en/latest/conventions/versioning/).
 
+## [1.19.2-3.0.1.5] - 2024-04-08
+### Fixed
+- it was possible that mega mushrooms could grow through solid blocks (thanks to IdrisQe for the report) #84
+
 ## [1.19.2-3.0.1.4] - 2022-12-10
 ### Fixed
 - fixed 1.19 remapping of old 1.18 vertical slabs to use the vertical slabs of Vertical Slabs Compat
