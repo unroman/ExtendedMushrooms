@@ -7,6 +7,7 @@ import cech12.extendedmushrooms.block.FairyRingBlock;
 import cech12.extendedmushrooms.init.ModBlockEntityTypes;
 import cech12.extendedmushrooms.init.ModParticles;
 import cech12.extendedmushrooms.init.ModSounds;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
@@ -207,11 +208,16 @@ public class FairyRingBlockEntity extends BlockEntity implements Container {
                 this.onItemEntityCollision((ItemEntity) entity);
             } else if (entity instanceof Player playerEntity) {
                 //Give entering player all stored items.
+                boolean collectedSomething = false;
                 for (int i = 0; i < this.getContainerSize(); i++) {
                     ItemStack stack = this.getItem(i);
                     if (playerEntity.getInventory().add(stack)) {
+                        collectedSomething = true;
                         this.removeItem(i, stack.getCount());
                     }
+                }
+                if (collectedSomething) {
+                    playerEntity.level.playLocalSound(playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, (playerEntity.getRandom().nextFloat() - playerEntity.getRandom().nextFloat()) * 1.4F + 2.0F, false);
                 }
                 boolean dirty = false;
                 // reset mode
