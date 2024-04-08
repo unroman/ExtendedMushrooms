@@ -5,6 +5,7 @@ import cech12.extendedmushrooms.block.mushrooms.BrownMushroom;
 import cech12.extendedmushrooms.block.mushrooms.RedMushroom;
 import cech12.extendedmushrooms.init.ModBlocks;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.MushroomBlock;
@@ -45,6 +46,23 @@ public class MixinMushroomBlock {
         }
         //automatic multiplication follows in tick method when ci.canceled NOT called
         //ci.cancel();
+    }
+
+    /**
+     * Change surviving behaviour.
+     */
+    @Inject(at = @At("HEAD"), method = "canSurvive", cancellable = true)
+    public void canSurviveProxy(BlockState state, LevelReader level, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        //survive if part of Fairy Ring
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            mutablePos.set(pos).move(direction);
+            if (level.getBlockState(mutablePos).getBlock() == ModBlocks.FAIRY_RING.get()) {
+                cir.setReturnValue(true);
+                cir.cancel();
+                return;
+            }
+        }
     }
 
     /**
