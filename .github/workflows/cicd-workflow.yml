@@ -16,12 +16,6 @@ jobs:
     uses: cech12/MinecraftModActions/.github/workflows/build.yml@main
     with:
       java-version: 17
-  dependencies:
-    needs: build
-    name: Dependencies
-    uses: cech12/MinecraftModActions/.github/workflows/dependency-submission.yml@main
-    with:
-      java-version: 17
   codeql:
     needs: build
     name: CodeQL
@@ -46,7 +40,12 @@ jobs:
     uses: cech12/MinecraftModActions/.github/workflows/publish-curseforge.yml@main
     with:
       java-version: 17
+      curseforge-id: 365507
+      game-versions: |
+        1.19.2
+      release-type: release
     secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
       curseforge-token: ${{ secrets.CURSEFORGE_API_KEY }}
   publish-modrinth:
     needs: publish-github
@@ -56,7 +55,9 @@ jobs:
     with:
       java-version: 17
       modrinth-id: XInCrQsd
-      mod-name: Extended Mushrooms
+      game-versions: |
+        1.19.2
+      release-type: release
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
       modrinth-token: ${{ secrets.MODRINTH_API_KEY }}
